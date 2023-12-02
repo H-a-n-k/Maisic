@@ -31,7 +31,7 @@ const fileController = {
             throw new CustomError(400, 'file error')
         }
 
-        //console.log(files)
+        console.log(files)
         res.json('ok')
     }
 }

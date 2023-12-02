@@ -19,3 +19,13 @@ const multerUpload = (dir: string, fields: string[]) => {
 }
 
 export default multerUpload
+
+export type MulterResult = [
+    {
+        fieldname: string,
+        originalname: string,
+        filename: string,
+        path: string,
+        mimetype: string
+    }
+]
