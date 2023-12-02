@@ -1,0 +1,18 @@
+curr: test account
+
+throw custom error from service
+
+BaiHat -m
+Album -m
+NgheSi -m
+NguoiDung -m
+TaiKhoan -m -s -c
+LoaiTaiKhoan -m -s -c
+
+validations
+
+authorize
+
+upload/get song
+
+
