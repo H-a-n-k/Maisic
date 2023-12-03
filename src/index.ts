@@ -2,10 +2,12 @@ import "express-async-errors";
 import errorHandler from './middleware/errorHandler';
 import express, { urlencoded } from 'express'
 import router from './routes';
+import cookieParser from "cookie-parser";
 
 const app = express();
 app.use(express.json())
-app.use(urlencoded({extended: false}))
+app.use(urlencoded({ extended: false }))
+app.use(cookieParser()); //'COOKIE_SECRET'
 
 app.use('/api', router)
 

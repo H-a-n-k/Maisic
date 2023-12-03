@@ -4,7 +4,7 @@ import path from 'path'
 //enctype="multipart/form-data"
 const dataDir = 'src/data'
 
-const multerUpload = (dir: string, fields: string[]) => { 
+const multerUpload = (fields: string[], dir: string = '') => { 
     var storage = multer.diskStorage({
         destination: function (req, file, cb) {
             cb(null, path.join(dataDir, dir));
