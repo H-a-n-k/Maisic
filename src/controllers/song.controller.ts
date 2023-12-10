@@ -1,12 +1,11 @@
 import SongService from "../services/song.service";
 import Song from "../models/song";
 import CrudControllerProxy from "./CrudController";
-import { Request, Response } from "express";
+import { Request, RequestHandler, Response } from "express";
 import { MulterResult } from "../middleware/multerUpload";
 import { MulterField } from "../utils/config";
-import { ParamsDictionary } from "express-serve-static-core";
-import { ParsedQs } from "qs";
 import { removeFile } from "./file.controller";
+import HttpRespose from "../types/HttpReponse";
 
 class SongController extends CrudControllerProxy<Song>{ 
     async add(req: Request, res: Response): Promise<void> {
@@ -45,6 +44,22 @@ class SongController extends CrudControllerProxy<Song>{
         }
 
         super.remove(req, res);
+    }
+
+    findSong: RequestHandler = async (req: any, res) => { 
+        const { keyword, cateID, order, asc } = req.query;
+
+        var list = await service.findSong(keyword, cateID, order, asc)
+        res.json(new HttpRespose(list))
+    }
+
+    addView: RequestHandler = async (req, res) => { 
+        const { id } = req.params;
+        var accID = res.locals.accID
+
+        var flag = await service.addView(parseInt(id), accID)
+
+        res.json(new HttpRespose([], flag))
     }
 }
 

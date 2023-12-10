@@ -38,7 +38,8 @@ class CrudController<T extends GeneralObject> implements ICrudController{
     // }
     async add (req: Request, res: Response) { 
         const item: T = req.body;
-        res.json(new HttpResponse([], await this.service.add(item)))
+        var id = await this.service.add(item)
+        res.json(new HttpResponse([id]))
     }
 
     async update(req: Request, res: Response) {

@@ -57,7 +57,7 @@ class AccountService extends MyService<Account> {
         const acc: Account = (await query.executeQuery()).data[0];
 
         if (!acc) return undefined
-        const flag = await bcryptVerify(item.Password, acc.Password);
+        const flag = await bcryptVerify(item.Password!, acc.Password!);
         if (!flag) return undefined
 
         return acc;

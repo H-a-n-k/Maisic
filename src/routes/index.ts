@@ -4,6 +4,9 @@ import cateRouter from "./category.route";
 import accountRouter from "./account.route";
 import songRouter from "./song.route";
 import fileRouter from "./file.route";
+import followRouter from "./follow.route";
+import historyRouter from "./history.route";
+import notifRoute from "./notif.route";
 
 const router = Router();
 
@@ -16,5 +19,8 @@ languageRoute(router);
 accountRouter(router);
 songRouter(router);
 fileRouter(router);
+followRouter(router)
+historyRouter(router)
+notifRoute(router)
 
 export default router

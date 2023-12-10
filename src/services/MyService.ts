@@ -5,7 +5,7 @@ import { CustomError } from "../middleware/errorHandler"
 
 interface ICrud<T> { 
     list(): Promise<T[]>
-    add(item: T): Promise<boolean>,
+    add(item: T): Promise<number>,
     update(item: T): Promise<boolean>,
     remove(item: T): Promise<boolean>,
     find(item: T): Promise<T>,
@@ -49,16 +49,18 @@ export default abstract class MyService<T extends GeneralObject> implements ICru
         const data = await query.executeQuery();
         return data.data;
     }
-    async add(item: T): Promise<boolean> {
+    async add(item: T): Promise<number> {
 
-        const query = QueryFactory.GetQueryObj(QueryType.Insert, {
+        var params = this.getQueryParams(item)
+        var query = QueryFactory.GetQueryObj(QueryType.Insert, {
             table: this.tableName,
             fields: this.getFields(true, item),
-            params: this.getQueryParams(item)
-        })
+            params: params
+        }).createQuery();
+        query += '; select SCOPE_IDENTITY() as id'
 
-        const data = await query.executeQuery();
-        return data.success
+        const data = await AsyncQuery(query, params);
+        return data.data[0]?.id || -1
     }
     async update(item: T): Promise<boolean> {
         const query = QueryFactory.GetQueryObj(QueryType.Update, {

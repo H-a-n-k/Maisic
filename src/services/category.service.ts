@@ -30,10 +30,10 @@ export default class CateService extends MyService<Category>{
     async list(): Promise<Category[]> {
         return await CateSingleton.getInstance();
     }
-    async add(item: Category): Promise<boolean> {
-        var flag = await super.add(item);
+    async add(item: Category): Promise<number> {
+        var id = await super.add(item);
         await CateSingleton.updateInstance();
-        return flag;
+        return id;
     }
     async update(item: Category): Promise<boolean> {
         var flag = await super.update(item);

@@ -8,9 +8,3 @@ export enum MulterField {
     fileImage = 'fileImage',
     file = 'file'
 }
-
-export enum Role {
-    admin = 'admin',
-    user = 'nguoidung',
-    artist = 'nghesi'
-}

@@ -1,7 +1,6 @@
 import { Router } from "express";
 import {default as ctrl} from '../controllers/account.controller'
-import authorize from "../middleware/authorize";
-import { Role } from "../utils/config";
+import authorize, { Role } from "../middleware/authorize";
 
 const accountRouter = (router: Router) => { 
     const r = '/acc'

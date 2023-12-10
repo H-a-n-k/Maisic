@@ -1,8 +1,8 @@
 
 export default interface Account { 
-    ID: number
-    Email: string
-    Password: string
+    ID?: number
+    Email?: string
+    Password?: string
     
-    MaLoai: number
+    MaLoai?: number
 }

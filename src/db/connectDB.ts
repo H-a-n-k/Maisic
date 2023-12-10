@@ -22,7 +22,7 @@ export const AsyncQuery = async (query: string, params: QueryParams): Promise<Ht
             if(x[1] !== undefined) request.input(x[0], x[1])
         });
 
-    //console.log('query' ,query, params)
+    //console.log('query', query, params);
     try {
         let result: MssqlRespose = await request.query(query);
 
@@ -40,6 +40,7 @@ export const AsyncQuery = async (query: string, params: QueryParams): Promise<Ht
         
     } catch (err) { 
         console.log('DB err: ', err)
+        console.log('Qeury: ', query, params)
         throw new CustomError(500, 'DB Error');
     }
     

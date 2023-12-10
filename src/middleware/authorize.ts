@@ -8,10 +8,10 @@ const authorize = (roles: string[]) => {
         const token = req.cookies.token;
 
         if (!token) throw new CustomError(401, 'Chưa đăng nhập');
-        const user = jwtVerify(token);
-        if (!roles.includes(user.role)) throw new CustomError(403, 'Không có quyền truy cập')
+        const acc = jwtVerify(token);
+        if (!roles.includes(acc.role)) throw new CustomError(403, 'Không có quyền truy cập')
 
-        res.locals.userID = user.ID 
+        res.locals.accID = acc.ID
         
         next();
     }
@@ -21,4 +21,8 @@ const authorize = (roles: string[]) => {
 
 export default authorize
 
-export const authorizeUser = () => authorize([])
+export enum Role {
+    admin = 'admin',
+    user = 'nguoidung',
+    artist = 'nghesi'
+}

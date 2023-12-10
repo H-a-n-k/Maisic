@@ -6,10 +6,8 @@ import { Request, RequestHandler, Response } from "express";
 import { CustomError } from "../middleware/errorHandler";
 import { bcryptHash } from "../utils/bcrypt";
 import HttpRespose from "../types/HttpReponse";
-import { jwtGen, jwtVerify } from "../utils/jwt";
+import { jwtGen } from "../utils/jwt";
 import UserInfo from "../types/userInfo";
-import { ParamsDictionary } from "express-serve-static-core";
-import { ParsedQs } from "qs";
 
 class AccountController extends CrudControllerProxy<Account> { 
     typeService = new AccountTypeService();
@@ -34,8 +32,8 @@ class AccountController extends CrudControllerProxy<Account> {
 
         var acc: Account | undefined = await service.login(item);
         if (!acc) throw new CustomError(401, 'Sai thông tin đăng nhập');
-        const role = await this.typeService.findByID(acc.MaLoai);
-        const user: UserInfo = { ID: acc.ID, role: role.Code };
+        const role = await this.typeService.findByID(acc.MaLoai!);
+        const user: UserInfo = { ID: acc.ID!, role: role.Code };
         const token = jwtGen(user);
 
         let options = {
