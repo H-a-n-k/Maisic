@@ -1,6 +1,7 @@
+import IClonable from "types/IClonable"
 import { compareDate, compareName, compareView } from "../utils/compare"
 
-export default interface Song { 
+export default class Song {
     ID?: number
     TenBH?: string
     LoiNhac?: string
@@ -14,6 +15,20 @@ export default interface Song {
     IDAlbum?: number
     IDTheLoai?: number
     IDNgheSi?: number
+}
+
+export class SongPrototype extends Song implements IClonable<SongPrototype> {
+
+    clone(): SongPrototype {
+        var song = new SongPrototype();
+        var ret = { ...this }
+        ret.clone = song.clone;
+        ret.copy = song.copy
+        return ret
+    }
+    copy(item: SongPrototype): void {
+        throw new Error("Method not implemented.")
+    }
 }
 
 export abstract class AbstractSongList { 
@@ -114,5 +129,21 @@ export class SongListSortDecorator extends SongListDecorator {
         if(!this.asc) return list.reverse()
 
         return list;
+    }
+}
+
+export class SongListLimitDecorator extends SongListDecorator {
+    limit: number
+
+    constructor(songList: AbstractSongList, limit: number) {
+        super(songList)
+        this.limit = limit
+    }
+
+    getList(): Song[] {
+        var list = this.songList.getList();
+        list = list.splice(0, this.limit)
+
+        return list
     }
 }

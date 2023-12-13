@@ -1,20 +1,29 @@
 import { getDateStart } from "../utils/time";
 import { CustomError } from "../middleware/errorHandler";
-import Song, { AbstractSongList, OrderSong, SongList, SongListCategoryDecorator, SongListKeywordDecorator, SongListSortDecorator } from "../models/song";
+import Song, { AbstractSongList, OrderSong, SongList, SongListCategoryDecorator, SongListKeywordDecorator, SongListLimitDecorator, SongListSortDecorator } from "../models/song";
 import MyService from "./MyService";
 import FollowService from "./follow.service";
 import HistoryService from "./history.service";
-import NotifService from "./notif.service";
 import UserService from "./user.service";
 import Artist from "../models/artist";
 import User from "../models/user";
+import { SelectQueryTemplate } from "../db/queryHelper";
+
+enum Cols { 
+    ID = 'ID', TenBH = 'TenBH', LoiNhac = 'LoiNhac', LuotTai = 'LuotTai',
+    NgayPH = 'NgayPH', AnhBia = 'AnhBia', IDAlbum = 'IDAlbum', MusicAPIPath = 'MusicAPIPath',
+    IDNgonNgu = 'IDNgonNgu', IDTheLoai = 'IDTheLoai', IDNgheSi = 'IDNgheSi', LuotNghe = 'LuotNghe'
+}
 
 export default class SongService extends MyService<Song> {
     protected genTableName(): string {
         return 'BaiHat'
     }
     protected genFields(): string[] {
-        return ['ID', 'TenBH', 'LoiNhac', 'LuotTai', 'NgayPH', 'AnhBia', 'IDAlbum', 'MusicAPIPath', 'IDNgonNgu', 'IDTheLoai', 'IDNgheSi', 'LuotNghe']
+        return [Cols.ID, Cols.TenBH, Cols.LoiNhac, Cols.LuotTai,
+            Cols.NgayPH, Cols.AnhBia, Cols.IDAlbum, Cols.MusicAPIPath,
+            Cols.IDNgonNgu, Cols.IDTheLoai, Cols.IDNgheSi, Cols.LuotNghe
+        ]
     }
     protected genKeys(): string[] {
         return ['ID']
@@ -30,11 +39,19 @@ export default class SongService extends MyService<Song> {
         return undefined
     } 
 
-    async findSong(keyword?: string, cateID?: number, order?: OrderSong, asc: boolean = false): Promise<Song[]> { 
-        var songList: AbstractSongList = new SongList(await this.list())
+    async findSong(keyword?: string, cateID?: number, order?: OrderSong, asc: boolean = false, limit?: number): Promise<Song[]> { 
+        var query = new SelectQueryTemplate({
+            table: this.tableName,
+            fields: [this.tableName + '.' + Cols.ID, Cols.TenBH, Cols.AnhBia, Cols.NgayPH, Cols.LuotNghe, 'HoTen'],
+            joinTables: [{ fromKey: Cols.IDNgheSi, toTb: 'NgheSi' }]
+        })
+        var list: Song[] = (await query.executeQuery()).data;
+
+        var songList: AbstractSongList = new SongList(list)
         if (keyword) songList = new SongListKeywordDecorator(songList, keyword)
         if (cateID) songList = new SongListCategoryDecorator(songList, cateID)
-        if(order) songList = new SongListSortDecorator(songList, order, asc)
+        if (order) songList = new SongListSortDecorator(songList, order, asc)
+        if(limit) songList = new SongListLimitDecorator(songList, limit)
 
         return songList.getList();
     }

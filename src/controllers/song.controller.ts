@@ -47,9 +47,9 @@ class SongController extends CrudControllerProxy<Song>{
     }
 
     findSong: RequestHandler = async (req: any, res) => { 
-        const { keyword, cateID, order, asc } = req.query;
+        const { keyword, cateID, order, asc, limit } = req.query;
 
-        var list = await service.findSong(keyword, cateID, order, asc)
+        var list = await service.findSong(keyword, cateID, order, asc, limit)
         res.json(new HttpRespose(list))
     }
 

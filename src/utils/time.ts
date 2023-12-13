@@ -9,3 +9,9 @@ export const getDateStart = (date: Date = new Date(Date.now())) => {
 
     return d
 }
+
+export function addDays(d: Date, days: number) {
+    var date = new Date(d.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+}

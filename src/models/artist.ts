@@ -1,3 +1,4 @@
+import IClonable from "types/IClonable"
 import Song from "./song"
 
 export interface IObserver { 
@@ -44,5 +45,13 @@ export default class Artist implements ICelebrity {
     notify(): void {
         this.observers.forEach(x => x.update(this))
     }
+}
 
+export class ArtistPrototype extends Artist implements IClonable<ArtistPrototype>{ 
+    clone(): ArtistPrototype {
+        return { ...this }
+    }
+    copy(item: Artist): void {
+        throw new Error("Method not implemented.")
+    }
 }

@@ -7,6 +7,7 @@ import fileRouter from "./file.route";
 import followRouter from "./follow.route";
 import historyRouter from "./history.route";
 import notifRoute from "./notif.route";
+import seedRoute from "./seed.route";
 
 const router = Router();
 
@@ -22,5 +23,6 @@ fileRouter(router);
 followRouter(router)
 historyRouter(router)
 notifRoute(router)
+seedRoute(router)
 
 export default router

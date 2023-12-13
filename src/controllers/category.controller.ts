@@ -1,6 +1,6 @@
-import Category, { CompositeCategory } from "../models/category";
+import Category from "../models/category";
 import CateService from "../services/category.service";
-import { NextFunction, Request, RequestHandler, Response } from "express";
+import { RequestHandler } from "express";
 import HttpResponse from "../types/HttpReponse";
 import CrudControllerProxy from "./CrudController";
 
@@ -15,7 +15,7 @@ class CategoryController extends CrudControllerProxy<Category>{
     }
 
     getOptSuper: RequestHandler<{ id: number }, HttpResponse> = async (req, res) => {
-        const {id} = req.params
+        const { id } = req.params
         const data = await service.getOptSuper({ ID: id });
 
         res.json(new HttpResponse(data))

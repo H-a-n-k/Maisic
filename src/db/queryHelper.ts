@@ -143,7 +143,7 @@ export class SelectQueryTemplate
 
         this.joinTables.forEach(x => { 
 
-            res += `${x.type ?? ''} JOIN ${x.toTb} ${x.toTbAlias} ON `
+            res += `${x.type ?? ''} JOIN ${x.toTb} ${x.toTbAlias??''} ON `
                 + `${x.fromTb ?? this.table}.${x.fromKey} = `
                 + `${x.toTbAlias ?? x.toTb}.${x.toKey ?? 'id'} `;
             })
