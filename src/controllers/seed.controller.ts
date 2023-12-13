@@ -6,7 +6,7 @@ import Artist, { ArtistPrototype } from "../models/artist";
 import ArtistService from "../services/artist.service";
 import LanguageService from "../services/language.service";
 import Song, { SongPrototype } from "../models/song";
-import { randomEl } from "../utils/random";
+import random, { randomEl } from "../utils/random";
 import { addDays } from "../utils/time";
 import SongService from "../services/song.service";
 
@@ -116,6 +116,7 @@ const seedSong = async (cates: number[], artists: number[], lang: number) => {
             song.IDNgheSi = randomEl(artists);
             song.IDNgonNgu = lang;
             song.NgayPH = addDays(song.NgayPH ?? new Date(), j * i);
+            song.LuotNghe = random(1, 1000)
 
             promises.push(songService.add(song));
         }
