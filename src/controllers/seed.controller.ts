@@ -115,7 +115,7 @@ const seedSong = async (cates: number[], artists: number[], lang: number) => {
             song.IDTheLoai = randomEl(cates);
             song.IDNgheSi = randomEl(artists);
             song.IDNgonNgu = lang;
-            song.NgayPH = addDays(song.NgayPH ?? new Date(), j * i);
+            song.NgayPH = new Date(random(2010, 2020), random(0, 11), random(1, 25))
             song.LuotNghe = random(1, 1000)
 
             promises.push(songService.add(song));
