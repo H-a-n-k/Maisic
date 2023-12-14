@@ -29,6 +29,24 @@ class SongController extends CrudControllerProxy<Song>{
         super.add(req, res);
     }
 
+    async update(req: Request, res: Response): Promise<void> {
+        const song: Song = req.body;
+
+        var files: any = req.files
+        if (files) {
+            var fileImg: MulterResult = files[MulterField.fileImage];
+            if (fileImg && fileImg[0]?.filename) song.AnhBia = fileImg[0].filename;
+
+            var fileMusic = files[MulterField.fileMusic];
+            if (fileMusic && fileMusic[0]?.filename) song.MusicAPIPath = fileMusic[0].filename;
+
+            var fileText = files[MulterField.fileText];
+            if (fileText && fileText[0]?.filename) song.LoiNhac = fileText[0].filename;
+        }
+
+        super.update(req, res)
+    }
+
     async remove(req: Request, res: Response): Promise<void> {
         const { id } = req.params
         const item = await service.find({ ID: parseInt(id) });

@@ -9,7 +9,8 @@ const songRouter = (router: Router) => {
     router.route(r)
         .get(ctrl.list)
         .post(multerUpload([MulterField.fileText, MulterField.fileImage , MulterField.fileMusic]), ctrl.add)
-    router.route(r + '/:id').get(ctrl.find).put(ctrl.update).delete(ctrl.remove)
+    router.route(r + '/:id').get(ctrl.find).delete(ctrl.remove)
+        .put(multerUpload([MulterField.fileText, MulterField.fileImage, MulterField.fileMusic]), ctrl.update)
 
     router.get(r + '/u/findSong', ctrl.findSong)
     router.get(r + '/u/addView/:id', authorize([Role.user]) ,ctrl.addView)
