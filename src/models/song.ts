@@ -114,6 +114,7 @@ export class SongListSortDecorator extends SongListDecorator {
 
     getList(): Song[] {
         var list = this.songList.getList();
+
         switch (this.orderCol) { 
             case OrderSong.Name:
                 list.sort(compareName)

@@ -10,16 +10,20 @@ export function compareName(a: Song, b: Song) {
     return 0;
 }
 
+function lim(x: number) { 
+    return Math.max(Math.min(x, 1), -1)
+}
+
 export function compareView(a: Song, b: Song) {
     var x = a.LuotNghe ?? 0;
     var y = b.LuotNghe ?? 0;
 
-    return x - y;
+    return lim(x - y);
 }
 
 export function compareDate(a: Song, b: Song) { 
-    var x = a.NgayPH ? a.NgayPH.getMilliseconds() : 0
-    var y = b.NgayPH ? b.NgayPH.getMilliseconds() : 0;
+    var x = a.NgayPH ? a.NgayPH.getTime() : 0
+    var y = b.NgayPH ? b.NgayPH.getTime() : 0;
 
-    return x - y;
+    return lim(x - y);
 }

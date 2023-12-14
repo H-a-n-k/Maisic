@@ -70,11 +70,14 @@ const seedArtist = async () => {
     artist.GioiTinh = 0;
     artist.NgaySinh = new Date(2000, 1, 1);
     artist.TieuSu = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+    const imgs = ['avatar_1.jpg', 'avatar_2.jpg', 'avatar_3.jpg']
+
     var artists: number[] = [];
     var promises = [];
     for (var i = 1; i <= 10; i++) {
         let x = artist.clone();
         x.HoTen += ' ' + i;
+        x.AnhDaiDien = randomEl(imgs);
         promises.push(artistService.add(x).then(id => artists.push(id)));
     }
 

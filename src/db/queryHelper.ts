@@ -251,4 +251,3 @@ export default class QueryFactory {
 // export const getFieldsFromParams = (params: QueryParams): string[] => { 
 //     return params.filter(x => (x.length > 1 && x[1] !== undefined)).map(x => x[0])
 // }
-

@@ -8,12 +8,9 @@ import followRouter from "./follow.route";
 import historyRouter from "./history.route";
 import notifRoute from "./notif.route";
 import seedRoute from "./seed.route";
+import artistRoute from "./artist.route";
 
 const router = Router();
-
-// const r = '/language'
-// router.route(r + '/').get(Ctrl.list).post(Ctrl.add)
-// router.route(r + '/:id').put(Ctrl.update).delete(Ctrl.remove).get(Ctrl.find)
 
 cateRouter(router);
 languageRoute(router);
@@ -23,6 +20,7 @@ fileRouter(router);
 followRouter(router)
 historyRouter(router)
 notifRoute(router)
+artistRoute(router)
 seedRoute(router)
 
 export default router
