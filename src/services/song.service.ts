@@ -1,6 +1,6 @@
 import { getDateStart } from "../utils/time";
 import { CustomError } from "../middleware/errorHandler";
-import Song, { AbstractSongList, OrderSong, SongList, SongListCategoryDecorator, SongListKeywordDecorator, SongListLimitDecorator, SongListSortDecorator } from "../models/song";
+import Song, { AbstractSongList, OrderSong, SongList, SongListArtistDecorator, SongListCategoryDecorator, SongListKeywordDecorator, SongListLimitDecorator, SongListSortDecorator } from "../models/song";
 import MyService from "./MyService";
 import FollowService from "./follow.service";
 import HistoryService from "./history.service";
@@ -39,15 +39,17 @@ export default class SongService extends MyService<Song> {
         return undefined
     } 
 
-    async findSong(keyword?: string, cateID?: number, order?: OrderSong, asc: boolean = false, limit?: number): Promise<Song[]> { 
+    async findSong(keyword?: string, cateID?: number, artistID?: number , order?: OrderSong, asc: boolean = false, limit?: number): Promise<Song[]> { 
         var query = new SelectQueryTemplate({
             table: this.tableName,
-            fields: [this.tableName + '.' + Cols.ID, Cols.TenBH, Cols.AnhBia, Cols.NgayPH, Cols.LuotNghe, 'HoTen'],
+            fields: [ this.tableName + '.' + Cols.ID, Cols.TenBH, Cols.AnhBia,
+                Cols.NgayPH, Cols.LuotNghe, Cols.IDTheLoai, Cols.IDNgheSi, 'HoTen'],
             joinTables: [{ fromKey: Cols.IDNgheSi, toTb: 'NgheSi' }]
         })
         var list: Song[] = (await query.executeQuery()).data;
 
         var songList: AbstractSongList = new SongList(list)
+        if (artistID) songList = new SongListArtistDecorator(songList, artistID)
         if (keyword) songList = new SongListKeywordDecorator(songList, keyword)
         if (cateID) songList = new SongListCategoryDecorator(songList, cateID)
         if (order) songList = new SongListSortDecorator(songList, order, asc)
@@ -71,6 +73,26 @@ export default class SongService extends MyService<Song> {
         if(item.IDNgheSi) songFacade.NotifyFollowers(item.IDNgheSi, item)
 
         return newId;
+    }
+
+    async find(item: Song): Promise<Song> {
+        var fields = [...this.fields];
+        fields[0] = 'BaiHat.ID';
+        fields.push(...['TenTheLoai', 'HoTen', 'TenNgonNgu']);
+
+        var query = new SelectQueryTemplate({
+            table: this.tableName,
+            joinTables: [
+                { fromKey: Cols.IDTheLoai, toTb: 'TheLoai' },
+                { fromKey: Cols.IDNgheSi, toTb: 'NgheSi' },
+                { fromKey: Cols.IDNgonNgu, toTb: 'NgonNgu' }
+            ],
+            condition: 'BaiHat.ID = @id',
+            fields: fields,
+            params: [['id', item.ID]]
+        });
+        var song = (await query.executeQuery()).data[0];
+        return song;
     }
 }
 

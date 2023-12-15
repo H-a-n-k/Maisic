@@ -95,6 +95,22 @@ export class SongListCategoryDecorator extends SongListDecorator {
     }
 }
 
+export class SongListArtistDecorator extends SongListDecorator {
+    artistID: number
+
+    constructor(songList: AbstractSongList, artistID: number) {
+        super(songList)
+        this.artistID = artistID
+    }
+
+    getList(): Song[] {
+        var list = this.songList.getList();
+        list = list.filter(x => x.IDNgheSi == this.artistID)
+
+        return list
+    }
+}
+
 export enum OrderSong { 
     Name = 'name', View = 'view', Date = "date"
 }
